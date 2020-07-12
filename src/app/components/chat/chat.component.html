@@ -3,14 +3,10 @@
 
 <div class="app-mensajes" id="app-mensajes">
 
-    <div class="text-right">
-        <span class="bagde badge-primary">Daniel Fernando</span>
-        <p>Este Es Un Mensaje Del Chat</p>
-    </div>
-
-    <div>
-        <span class="bagde badge-success">Maira Hernandez</span>
-        <p>Saludos Daniel Fernando</p>
+    <!-- Interactuar Con El Servicio Del Chat De Forma Directa -->
+    <div [ngClass]="{'text-right': chatService.usuario.uid == chat.uid}" *ngFor="let chat of chatService.chats">
+        <span class="bagde badge-primary" [ngClass]="{'badge-primary': chatService.usuario.uid == chat.uid, 'badge-success': chatService.usuario.uid != chat.uid }">{{chat.nombre}}</span>
+        <p>{{chat.mensaje}}</p>
     </div>
 
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -7,10 +8,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatComponent implements OnInit {
   mensaje: string;
+  elemento: HTMLElement;
 
-  constructor() {}
+  constructor(public chatService: ChatService) {
+    this.chatService.obtenerMensajesDeLaCollection().subscribe(() => {
+      setTimeout(() => {
+        this.elemento.scrollTop = this.elemento.scrollHeight;
+      }, 20);
+    });
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.elemento = document.getElementById('app-mensajes');
+  }
 
-  enviar_mensaje() {}
+  enviar_mensaje() {
+    // console.log(this.mensaje);
+    if (this.mensaje.length === 0) {
+      return;
+    }
+
+    this.chatService
+      .agregarMensaje(this.mensaje)
+      .then(() => {
+        console.log('Mensaje Enviado');
+        this.mensaje = '';
+      })
+      .catch((err) => console.error('Error Al Guardar', err));
+  }
 }
